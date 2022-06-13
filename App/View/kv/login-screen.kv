@@ -1,0 +1,97 @@
+#: import CardTransition kivy.uix.screenmanager.CardTransition
+Container:
+    size_hint: 1, 1
+    id: container
+    LoginScreen:
+        size_hint: 1, 1
+        id: login_screen
+        name: 'LoginScreen'
+        manager: 'container'
+    RegisterScreen:
+        size_hint: 1, 1
+        id: register_screen
+        name: 'RegisterScreen'
+        manager: 'container'
+<RegisterScreen>:
+    clearcolor: 1, 0, 0, 1
+    size_hint: 1, 1
+    MDFillRoundFlatButton:
+        text: 'Регистрация'
+        on_press:
+            #root.btn_click()
+            app.root.transition.direction = 'left'
+            app.root.current = 'LoginScreen'
+        pos_hint: {'center_x': 0.5}
+        md_bg_color: (237/255, 237/255, 237/255, 1)
+        text_color: 0, 0, 0, 1
+        size_hint_x: .75
+<LoginScreen>:
+    size_hint: 1, 1
+    pos_hint: {'top': 1}
+    MDBoxLayout:
+        #pos_hint: {'x': 0, 'y': 0}
+        pos_hint: {'center_x': 0.5, 'top': 1}
+        size_hint: 1, 1
+        orientation: 'vertical'
+        spacing: '20dp'
+        padding: '20dp'
+        FitImage:
+            source: 'App/View/images/logo.png'
+            width: '250dp'
+            size_hint: None, None
+            pos_hint: {'center_x': 0.5, 'top': 1}
+        MDTextField:
+            hint_text: 'Логин'
+            #mode: 'round'
+            size_hint_x: .60
+            pos_hint: {'center_x': .5}
+            line_color_normal: 0, 0, 0, 1 # Обводка
+            line_color_focus: 0, 0, 0, 1 # Обводка
+            hint_text_color_focus: 0, 0, 0, 1
+            fill_color_normal: 1, 1, 1, 1 # Задний фон
+            text_color_normal: 0, 0, 0, 1 # Текст
+            text_color_focus: 0, 0, 0, 1 # Текст
+        MDTextField:
+            hint_text: 'Пароль'
+            password: True
+            #mode: 'round'
+            md_bg_color: 223/255, 182/255, 120/255, 1
+            size_hint_x: .60
+            pos_hint: {'center_x': .5}
+            line_color_normal: 0, 0, 0, 1 # Обводка
+            line_color_focus: 0, 0, 0, 1 # Обводка
+            hint_text_color_focus: 0, 0, 0, 1
+            fill_color_normal: 1, 1, 1, 1 # Задний фон
+            text_color_normal: 0, 0, 0, 1 # Текст
+            text_color_focus: 0, 0, 0, 1 # Текст
+        MDTextButton:
+            text: 'Забыли пароль?'
+            color: (0/255, 102/255, 255/255, 1)
+            size_hint_x: .75
+            pos_hint: {'center_x': .5}
+        MDFillRoundFlatButton:
+            text: 'Вход'
+            bold: True
+            pos_hint: {'center_x': 0.5}
+            md_bg_color: (223/255, 182/255, 120/255, 1)
+            text_color: 0, 0, 0, 1
+            size_hint_x: .75
+        MDFillRoundFlatButton:
+            text: 'Регистрация'
+            on_press:
+                #root.btn_click()
+                app.root.transition.duration = .18
+                app.root.transition.direction = 'left'
+                app.root.transition = CardTransition(mode='pop')
+                app.root.current = 'RegisterScreen'
+            pos_hint: {'center_x': 0.5}
+            md_bg_color: (237/255, 237/255, 237/255, 1)
+            text_color: 0, 0, 0, 1
+            size_hint_x: .75
+        MDFillRoundFlatButton:
+            padding_y: 25
+            pos_hint: {'center_x': 0.5}
+            md_bg_color: (237/255, 237/255, 237/255, 1)
+            text_color: 0, 0, 0, 1
+            size_hint_x: .75
+            text: 'Продолжить без аккаунта'
