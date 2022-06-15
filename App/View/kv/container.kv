@@ -1,3 +1,5 @@
+#:import Window kivy.core.window.Window
+#:import IconLeftWidget kivymd.uix.list.IconLeftWidget
 Container:
     id: container
     LoginScreen:
@@ -13,13 +15,80 @@ Container:
         name: 'ProductsScreen'
         manager: 'container'
 
-<ProductsScreen>:
+
+
+<ItemBackdropFrontLayer@TwoLineAvatarListItem>
+    icon: "android"
+
+    IconLeftWidget:
+        icon: root.icon
+
+
+<MyBackdropFrontLayer@ScrollView>
+    pos_hint: {"top": 1, 'center_x': 0.5}
+    size_hint: 1, 1
+    do_scroll_x: False
     MDBoxLayout:
-        pos_hint: {'center_x': 0.5, 'center_y': 0.5}
-        adaptive_size: True
+        padding: 20, 20
         orientation: 'vertical'
-        spacing: '20dp'
-        padding: '20dp'
+        size_hint: 1, 0.3
+        GridLayout:
+            pos_hint: {'center_y': 0.5, 'center_x': 0.5}
+            cols: 2
+            rows: 2
+            Image:
+                pos_hint: {'center_y': 0.5, 'center_x': 0.5}
+                source: 'App/View/images/ubka.jpg'
+                size_hint: 0.5, 0.5
+            MDLabel:
+                pos_hint: {'center_y': 0.5, 'center_x': 0.5}
+                size_hint: 0.5, 0.5
+                text: 'Юбка ПМ-201'
+            MDLabel:
+                pos_hint: {'center_y': 0.5, 'center_x': 0.5}
+                size_hint: 0.5, 0.5
+                text: 'Количество: 1'
+            MDTextButton:
+                pos_hint: {'center_y': 0.5, 'center_x': 0.5}
+                size_hint: 0.5, 0.5
+                text: 'Купить'
+                on_press:
+                    pass
+
+                
+    
+
+
+<MyBackdropBackLayer@MDBoxLayout>
+    size_hint: None, None
+    pos_hint: {"center_x": .5, "top": 1}
+    md_bg_color: (223/255, 182/255, 120/255, 1)
+    MDTextButton:
+        text: 'Аккаунт'
+        on_press:
+            app.root.current = 'LoginScreen'
+
+<ProductsScreen>:
+    MDBackdrop:
+        id: backdrop
+        left_action_items: [['menu', lambda x: self.open()]]
+        title: 'Etalina'
+        header_text: 'Каталог'
+        back_layer_color: (223/255, 182/255, 120/255, 1)
+
+        MDBackdropBackLayer:
+            MyBackdropBackLayer:
+                id: backlayer
+
+        MDBackdropFrontLayer:
+            MyBackdropFrontLayer:
+                backdrop: backdrop
+    # MDBoxLayout:
+    #     pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+    #     adaptive_size: True
+    #     orientation: 'vertical'
+    #     spacing: '20dp'
+    #     padding: '20dp'
 <RegisterScreen>:
     MDBoxLayout:
         pos_hint: {'center_x': 0.5, 'center_y': 0.5}
@@ -27,10 +96,7 @@ Container:
         orientation: 'vertical'
         spacing: '20dp'
         padding: '20dp'
-        FitImage:
-            source: 'App/View/images/logo.png'
-            width: '250dp'
-            size_hint: None, None
+        LogoImage:
             pos_hint: {'center_x': 0.5, 'top': 1}
         MDLabel:
             id: response
@@ -94,7 +160,9 @@ Container:
             size_hint_x: .75
             text: 'Продолжить без аккаунта'
 
-
+<LogoImage@Image>:
+    source: 'App/View/images/logo.png'
+    size_hint: 1.4, None
 
 <LoginScreen>:
     MDBoxLayout:
@@ -104,10 +172,7 @@ Container:
         orientation: 'vertical'
         spacing: '20dp'
         padding: '20dp'
-        FitImage:
-            source: 'App/View/images/logo.png'
-            width: '250dp'
-            size_hint: None, None
+        LogoImage:
             pos_hint: {'center_x': 0.5, 'top': 1}
         MDLabel:
             id: response
@@ -148,7 +213,7 @@ Container:
         MDFillRoundFlatButton:
             text: 'Вход'
             on_press:
-                root.get_account()
+                root.post_auth()
             bold: True
             pos_hint: {'center_x': 0.5}
             md_bg_color: (223/255, 182/255, 120/255, 1)

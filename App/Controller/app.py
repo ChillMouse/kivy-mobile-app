@@ -19,26 +19,41 @@ class RegisterScreen(Screen):
         login = self.ids.login_field.text
         password = self.ids.password_field.text
         params = {'login': login, 'password': password}
-        res = req.post(f'{urlApi}/register', params)
-        json = res.json()
-        print(type(json))
-        if type(json) == 'dict' and json['status'] and json['status'] == 'error':
-            self.ids.response.text = 'Ошибка регистрации'
-        print(res.json())
+        response = self.ids.response
+        try:
+            res = req.post(f'{urlApi}/register', params)
+            json = res.json()
+            if type(json) == dict and json['status'] and json['status'] == 'error':
+                response.text = json['text']
+            else: response.text = ''
+            print(json)
+        except req.ConnectionError as err:
+            response.text = 'Нет интернета'
+
 
 class ProductsScreen(Screen):
     pass
 
 class LoginScreen(Screen):
-    def get_account(self):
+    
+    def post_auth(self):
         global urlApi
+        url = f'{urlApi}/auth'
         login = self.ids.login_field.text
         password = self.ids.password_field.text
-        res = req.post(f'{urlApi}/auth', {'login': login, 'password': password})
-        json = res.json()
-        if type(json) == 'dict' and json['status'] and json['status'] == 'error':
-            self.ids.response.text = 'Ошибка в логине или пароле'
-        print(res.json())
+        response = self.ids.response
+        params = {'login': login, 'password': password}
+        try:
+            res = req.post(url=url, params=params)
+            json = res.json()
+            print(json)
+            if type(json) == dict and json['status'] == 'error':
+                response.text = json['text']
+            else: response.text = ''
+        except req.ConnectionError as err:
+            response.text = 'Нет интернета'
+
+
 
 class EtalinaApp(MDApp):
     def build(self):
