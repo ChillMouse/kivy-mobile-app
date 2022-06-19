@@ -1,21 +1,20 @@
 #:import Window kivy.core.window.Window
 #:import IconLeftWidget kivymd.uix.list.IconLeftWidget
 Container:
+    size_hint: 1, 1
     id: container
     LoginScreen:
         id: login_screen
         name: 'LoginScreen'
         manager: 'container'
-    RegisterScreen:
-        id: register_screen
-        name: 'RegisterScreen'
-        manager: 'container'
     ProductsScreen:
         id: products_screen
         name: 'ProductsScreen'
         manager: 'container'
-
-
+    RegisterScreen:
+        id: register_screen
+        name: 'RegisterScreen'
+        manager: 'container'
 
 <ItemBackdropFrontLayer@TwoLineAvatarListItem>
     icon: "android"
@@ -54,10 +53,6 @@ Container:
                 text: 'Купить'
                 on_press:
                     pass
-
-                
-    
-
 
 <MyBackdropBackLayer@MDBoxLayout>
     size_hint: None, None
@@ -166,12 +161,10 @@ Container:
 
 <LoginScreen>:
     MDBoxLayout:
-        #pos_hint: {'x': 0, 'y': 0}
         pos_hint: {'center_x': 0.5, 'center_y': 0.5}
         adaptive_size: True
         orientation: 'vertical'
-        spacing: '20dp'
-        padding: '20dp'
+        spacing: '30dp'
         LogoImage:
             pos_hint: {'center_x': 0.5, 'top': 1}
         MDLabel:
@@ -183,7 +176,7 @@ Container:
             hint_text: 'Логин'
             id: login_field
             mode: 'round'
-            size_hint_x: .60
+            size_hint_x: 1
             pos_hint: {'center_x': .5}
             line_color_normal: 0, 0, 0, 1 # Обводка
             line_color_focus: 0, 0, 0, 1 # Обводка
@@ -197,7 +190,6 @@ Container:
             password: True
             mode: 'round'
             md_bg_color: 223/255, 182/255, 120/255, 1
-            size_hint_x: .60
             pos_hint: {'center_x': .5}
             line_color_normal: 0, 0, 0, 1 # Обводка
             line_color_focus: 0, 0, 0, 1 # Обводка
@@ -208,8 +200,9 @@ Container:
         MDTextButton:
             text: 'Забыли пароль?'
             color: (0/255, 102/255, 255/255, 1)
-            size_hint_x: .75
             pos_hint: {'center_x': .5}
+            halign: 'left'
+            size_hint_x: 1
         MDFillRoundFlatButton:
             text: 'Вход'
             on_press:
@@ -218,7 +211,7 @@ Container:
             pos_hint: {'center_x': 0.5}
             md_bg_color: (223/255, 182/255, 120/255, 1)
             text_color: 0, 0, 0, 1
-            size_hint_x: .75
+            size_hint_x: 1
         MDFillRoundFlatButton:
             text: 'Регистрация'
             on_press:
@@ -228,7 +221,7 @@ Container:
             pos_hint: {'center_x': 0.5}
             md_bg_color: (237/255, 237/255, 237/255, 1)
             text_color: 0, 0, 0, 1
-            size_hint_x: .75
+            size_hint_x: 1
         MDFillRoundFlatButton:
             padding_y: 25
             on_press:
@@ -238,5 +231,5 @@ Container:
             pos_hint: {'center_x': 0.5}
             md_bg_color: (237/255, 237/255, 237/255, 1)
             text_color: 0, 0, 0, 1
-            size_hint_x: .75
+            size_hint_x: 1
             text: 'Продолжить без аккаунта'

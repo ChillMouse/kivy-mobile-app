@@ -2,4 +2,5 @@
 from App.Controller.app import *
 
 if __name__ in ('__main__', '__android__'):
-    EtalinaApp().run()
+    app_etalina = EtalinaApp()
+    app_etalina.run()
