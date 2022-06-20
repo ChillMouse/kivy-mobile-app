@@ -42,18 +42,20 @@ class LoginScreen(Screen):
         login = self.ids.login_field.text
         password = self.ids.password_field.text
         response = self.ids.response
+        answer = ''
         params = {'login': login, 'password': password}
         try:
             res = req.post(url=url, params=params)
             json = res.json()
             print(json)
+            answer = res
             if type(json) == dict and json['status'] == 'error':
                 response.text = json['text']
             else: response.text = ''
         except req.ConnectionError as err:
             response.text = 'Нет интернета'
-
-
+            answer = err
+        return answer
 
 class EtalinaApp(MDApp):
     def build(self):
