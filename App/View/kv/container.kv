@@ -16,52 +16,51 @@ Container:
         name: 'RegisterScreen'
         manager: 'container'
 
-<ItemBackdropFrontLayer@TwoLineAvatarListItem>
+<ItemBackdropFrontLayer@TwoLineAvatarListItem>:
     icon: "android"
-
     IconLeftWidget:
         icon: root.icon
 
 
-<MyBackdropFrontLayer@ScrollView>
+<MyBackdropFrontLayer@ScrollView>:
     pos_hint: {"top": 1, 'center_x': 0.5}
     size_hint: 1, 1
     do_scroll_x: False
     MDBoxLayout:
+        id: this_box
         padding: 20, 20
         orientation: 'vertical'
-        size_hint: 1, 0.3
-        GridLayout:
-            pos_hint: {'center_y': 0.5, 'center_x': 0.5}
-            cols: 2
-            rows: 2
-            Image:
-                pos_hint: {'center_y': 0.5, 'center_x': 0.5}
-                source: 'App/View/images/ubka.jpg'
-                size_hint: 0.5, 0.5
-            MDLabel:
-                pos_hint: {'center_y': 0.5, 'center_x': 0.5}
-                size_hint: 0.5, 0.5
-                text: 'Юбка ПМ-201'
-            MDLabel:
-                pos_hint: {'center_y': 0.5, 'center_x': 0.5}
-                size_hint: 0.5, 0.5
-                text: 'Количество: 1'
-            MDTextButton:
-                pos_hint: {'center_y': 0.5, 'center_x': 0.5}
-                size_hint: 0.5, 0.5
-                text: 'Купить'
-                on_press:
-                    pass
+        size_hint: 1, 1
+        height: sum(x.height for x in self.children)
 
-<MyBackdropBackLayer@MDBoxLayout>
-    size_hint: None, None
-    pos_hint: {"center_x": .5, "top": 1}
+<MyBackdropBackLayer@MDBoxLayout>:
+    size_hint: 1, None
     md_bg_color: (223/255, 182/255, 120/255, 1)
+    orientation: 'vertical'
+    pos_hint: {'top': 1}
+    spacing: '20dp'
     MDTextButton:
+        size_hint_x: 1
+        pos_hint: {'center_x': 0.5, 'top': 1}
         text: 'Аккаунт'
+        halign: 'center'
         on_press:
             app.root.current = 'LoginScreen'
+    MDTextButton:
+        size_hint_x: 1
+        pos_hint: {'center_x': 0.5, 'top': 1}
+        text: 'Выйти из аккаунта'
+        halign: 'center'
+        on_press:
+            app.root.exit_from_account()
+            app.root.current = 'LoginScreen'
+    MDTextButton:
+        size_hint_x: 1
+        pos_hint: {'center_x': 0.5, 'top': 1}
+        text: 'Выйти из приложения'
+        halign: 'center'
+        on_press:
+            app.stop()
 
 <ProductsScreen>:
     MDBackdrop:
@@ -73,17 +72,12 @@ Container:
 
         MDBackdropBackLayer:
             MyBackdropBackLayer:
-                id: backlayer
 
         MDBackdropFrontLayer:
             MyBackdropFrontLayer:
+                id: this_front
                 backdrop: backdrop
-    # MDBoxLayout:
-    #     pos_hint: {'center_x': 0.5, 'center_y': 0.5}
-    #     adaptive_size: True
-    #     orientation: 'vertical'
-    #     spacing: '20dp'
-    #     padding: '20dp'
+
 <RegisterScreen>:
     MDBoxLayout:
         pos_hint: {'center_x': 0.5, 'center_y': 0.5}
