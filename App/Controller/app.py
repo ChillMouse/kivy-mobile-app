@@ -1,3 +1,4 @@
+from distutils.command.build import build
 from kivymd.app import MDApp
 from kivymd.uix.screen import MDScreen
 from kivy.uix.popup import Popup
@@ -14,7 +15,7 @@ urlApi = 'http://api.cg10280.tmweb.ru/api/mobile'
 
 class Container(ScreenManager):
     def check_token_account(self):
-        global urlApi, store, oauthpass
+        global urlApi, store, oauthpass, sm
         token = store['account']['token']
         params = {'client_id': oauthpass, 'token': token}
         print(params)
@@ -23,7 +24,7 @@ class Container(ScreenManager):
             json = res.json()
             print(json)
             if type(json) == dict and 'result' in json and json['result'] == True:
-                pass
+                sm.current = 'ProductsScreen'
         except req.ConnectionError as err:
             print('Нет интернета')
 
@@ -37,7 +38,7 @@ class RegisterScreen(MDScreen):
         try:
             res = req.post(f'{urlApi}/register', params)
             json = res.json()
-            if type(json) == dict and json['status'] and json['status'] == 'error':
+            if type(json) == dict and 'status' in json and json['status'] == 'error':
                 response.text = json['text']
             else: response.text = ''
             print(json)
@@ -51,49 +52,37 @@ class ProductsScreen(MDScreen):
 class LoginScreen(MDScreen):
 
     def post_auth(self):
-        global urlApi, store, oauthpass
+        global urlApi, store, oauthpass, sm
         url = f'{urlApi}/auth'
         login = self.ids.login_field.text
         password = self.ids.password_field.text
         response = self.ids.response
-<<<<<<< HEAD
-        answer = ''
-        params = {'login': login, 'password': password}
-=======
         params = {'login': login, 'password': password, 'client_id': oauthpass}
 
->>>>>>> e71fac0f7b8e28104326fec6ea96c886d27f93fc
         try:
             res = req.post(url=url, params=params)
             json = res.json()
             print(json)
-<<<<<<< HEAD
-            answer = res
-            if type(json) == dict and json['status'] == 'error':
-=======
-            if type(json) == dict and json['status'] == 'success':
+            if type(json) == dict and 'status' in json and json['status'] == 'success':
                 store['account'] = {'token': json['token']}
-                Container.switch_to(ProductsScreen)
+                sm.current = 'ProductsScreen'
             elif type(json) == dict and json['status'] == 'error':
->>>>>>> e71fac0f7b8e28104326fec6ea96c886d27f93fc
                 response.text = json['text']
 
         except req.ConnectionError as err:
             response.text = 'Нет интернета'
-<<<<<<< HEAD
-            answer = err
-        return answer
-=======
->>>>>>> e71fac0f7b8e28104326fec6ea96c886d27f93fc
 
 class EtalinaApp(MDApp):
     def build(self):
+        global sm # screen manager
+
         buildKv = Builder.load_file("App/View/kv/container.kv")
-        self.icon = "App/View/images/icon.png"
+        sm = buildKv
         return buildKv
     def on_start(self):
         global store, oauthpass
         oauthpass = """~(!?:2J`;x%5)Nw>"""
         store = JsonStore('account_info.json')
         if 'account' in store:
-            Container.check_token_account(self)
+            container = Container()
+            container.check_token_account()
