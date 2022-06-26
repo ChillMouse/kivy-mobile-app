@@ -67,35 +67,41 @@ class ProductsScreen(MDScreen):
         global urlApi, store, oauthpass, sm
         url = f'{urlApi}/getProducts'
         params = {'client_id': oauthpass}
-        res = req.get(url, params)
-        if res.status_code == 200:
-            json = res.json()
-            if 'status' in json and json['status'] == 'success':
-                count_items = 0
-                for prod in json['results']:
-                    count_items += 1
-                    randomName = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(12));
-                    with open(f"App/View/images/temp/{randomName}.png", "wb") as fh:
-                        fh.write(base64.decodebytes(str.encode(prod['image'])))
-                        fh.close()
-                        white = (1, 1, 1, 1)
-                        gray = (0.52, 0.52, 0.52, 0.3)
-                        if count_items % 2 == 1:
-                            color = white
-                        else:
-                            color = gray
+        try:
+            res = req.get(url, params)
+            if res.status_code == 200:
+                json = res.json()
+                if 'status' in json and json['status'] == 'success':
+                    count_items = 0
+                    for prod in json['results']:
+                        count_items += 1
+                        randomName = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(12))
+                        with open(f"App/View/images/temp/{randomName}.png", mode="w+b") as fh:
+                            fh.write(base64.decodebytes(str.encode(prod['image'])))
+                            fh.close()
+                            white = (1, 1, 1, 1)
+                            gray = (0.52, 0.52, 0.52, 0.3)
+                            if count_items % 2 == 1:
+                                color = white
+                            else:
+                                color = gray
 
-                        box = self.ids.this_front.ids.this_box
-                        image = Image(source = f'App/View/images/temp/{randomName}.png', size_hint=(1, 1), pos_hint={'center_y': 0.5, 'center_x': 0.5})
-                        name = MDLabel(pos_hint={'center_y': 0.5, 'center_x': 0.5}, size_hint=(0.5, 0.5), text=prod['name'], halign='center')
-                        count = MDLabel(pos_hint={'center_y': 0.5, 'center_x': 0.5}, size_hint=(0.5, 0.5), text=prod['description'], halign='center')
-                        buy = MDLabel(pos_hint={'center_y': 0.5, 'center_x': 0.5}, size_hint=(0.5, 0.5), text=prod['cost'], halign='center')
-                        grid = MDGridLayout(pos_hint={'center_y': 0.5, 'center_x': 0.5}, cols=2, rows=2, md_bg_color=color, padding='20dp')
-                        grid.add_widget(name)
-                        grid.add_widget(image)
-                        grid.add_widget(count)
-                        grid.add_widget(buy)
-                        box.add_widget(grid)
+                            box = self.ids.this_front.ids.this_box
+                            image = Image(source = f'App/View/images/temp/{randomName}.png', size_hint=(1, 1), pos_hint={'center_y': 0.5, 'center_x': 0.5})
+                            name = MDLabel(pos_hint={'center_y': 0.5, 'center_x': 0.5}, size_hint=(0.5, 0.5), text=prod['name'], halign='center')
+                            count = MDLabel(pos_hint={'center_y': 0.5, 'center_x': 0.5}, size_hint=(0.5, 0.5), text=prod['description'], halign='center')
+                            buy = MDLabel(pos_hint={'center_y': 0.5, 'center_x': 0.5}, size_hint=(0.5, 0.5), text=prod['cost'], halign='center')
+                            grid = MDGridLayout(pos_hint={'center_y': 0.5, 'center_x': 0.5}, cols=2, rows=2, md_bg_color=color, padding='20dp')
+                            grid.add_widget(name)
+                            grid.add_widget(image)
+                            grid.add_widget(count)
+                            grid.add_widget(buy)
+                            box.add_widget(grid)
+        except FileNotFoundError as err:
+            print(err.args)
+        except req.ConnectionError as err:
+            print(err.args)
+
 
 class LoginScreen(MDScreen):
 
